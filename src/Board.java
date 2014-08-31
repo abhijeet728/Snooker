@@ -1,3 +1,7 @@
+
+import java.util.HashSet;
+import java.util.Set;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -124,24 +128,24 @@ public class Board {
         }       
         return 0;
     }
-    private float[] getPositionOfBallWithNumber(int ballNumber){
-        float pointArr[] = new float[2];
+    private Point getPositionOfBallWithNumber(int ballNumber){
+        Point p = new Point();
         for(Ball object : this.ballsArr){
             if(object.getBallNumber() == ballNumber){
-                pointArr[0] = object.getX();
-                pointArr[1] = object.getY();
+                p.x = object.getX();
+                p.y = object.getY();
             }
         }
-        return pointArr;
+        return p;
     }
     
-    public void hitBall(float posX, float posY){
+    public void hitBall(Point P, double velocity){
         
         int whiteBallNumber = this.getWhiteBallNumber();
-        float whiteBallPos[] = this.getPositionOfBallWithNumber(whiteBallNumber);
+        Point whiteBallPos = this.getPositionOfBallWithNumber(whiteBallNumber);
         
         //points where line hits the edges of the board
-        float pointArr[] = this.getBoardExtremePoints(posX, posY, whiteBallPos[0], whiteBallPos[1]);
+        //float pointArr[] = this.getBoardExtremePoints(posX, posY, whiteBallPos[0], whiteBallPos[1]);
         //System.out.println("X postion=>"+ pointArr[0] +" Y postion=>" + pointArr[1]);
         //System.out.println("X postion=>"+ pointArr[2] +" Y postion=>" + pointArr[3]);
         
@@ -149,21 +153,30 @@ public class Board {
         //double closest[] = this.closestpointonline(pointArr[0], pointArr[1], pointArr[2], pointArr[3], 889.0f, 737.0f);
         //System.out.println("X postion=>"+ closest[0] +" Y postion=>" + closest[1]);
         
-        //find the first ball in the path 
-            
+        //using descrete time steps
+        double slope = P.getSlope(P, whiteBallPos);       
+        double xAtZero = slope * 0 - slope * P.x + P.y; 
+        double angle = P.getAngle(P, whiteBallPos, slope);
+        this.setVelocityOfBall(this.getVx(velocity, angle), this.getVy(velocity, angle), whiteBallNumber);
         
-        
-    }
-    private void firstballInPath(double pointArr[]){
-        
-        
-        
-        
+        //update this white balls position and check for any collision
         
     }
-
-    
-    
+    private double getVx(double velocity, double angle){
+        angle = Math.toRadians(angle);
+        return velocity * Math.cos(angle);
+    }
+    private double getVy(double velocity, double angle){
+        angle = Math.toRadians(angle);
+        return velocity * Math.sin(angle);
+    }
+    private void setVelocityOfBall(double vx, double vy, int ballNumber){
+        for(Ball object : this.ballsArr){
+            if(object.getBallNumber() == ballNumber){
+                object.setVelocity(vx, vy);
+            }
+        }
+    }
     
     private double[] closestpointonline(float lx1, float ly1, float lx2, float ly2, float x0, float y0){ 
          float A1 = ly2 - ly1; 

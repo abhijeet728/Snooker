@@ -11,6 +11,8 @@
 public class Ball {
     private final float diameter;
     private final float mass;
+    private double vx;
+    private double vy;
     private float xPos;
     private float yPos;
     private String color;
@@ -27,7 +29,8 @@ public class Ball {
         this.yPos = yPos;
         this.ballId = ballId;
         this.mass = 1;
-        
+        this.vx = 0.0f;
+        this.vy = 0.0f;
         int initiated = 0;
         for(int i = 0; i < Ball.preDefCodes.length; i++){
             if(Ball.preDefCodes[i] == code){
@@ -44,6 +47,10 @@ public class Ball {
     public void changeBallPosition(float x, float y){
         this.xPos = x;
         this.yPos = y;
+    }
+    public void setVelocity(double vx, double vy){
+        this.vx = vx;
+        this.vy = vy;
     }
     public float getX(){
         return this.xPos;
@@ -64,7 +71,7 @@ public class Ball {
         return this.ballCode;
     }
     public void showInfo(){        
-        System.out.println("Ball number=" + this.ballId + " Code=" + this.ballCode + " Color=" + this.color + " xPos=" + this.xPos + " yPos=" + this.yPos);      
+        System.out.println("Ball number=" + this.ballId + " Code=" + this.ballCode + " Color=" + this.color + " xPos=" + this.xPos + " yPos=" + this.yPos + " Vx=" + this.vx + " Vy1=" + this.vy);      
     }
  
 }

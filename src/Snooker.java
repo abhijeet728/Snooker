@@ -63,7 +63,8 @@ public class Snooker {
                     xPos = in.nextFloat();
                     yPos = in.nextFloat();
                     System.out.println("===================================================================================");
-                    this.board.hitBall(xPos, yPos);
+                    Point P = new Point(xPos, yPos);
+                    this.board.hitBall(P, 2.0d);
                     System.out.println("===================================================================================");
                     break;
                 case 4:
